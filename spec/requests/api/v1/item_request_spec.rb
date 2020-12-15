@@ -48,12 +48,12 @@ describe 'Items API' do
   end
 
   it 'can create a new item' do
-    merchant_1 = create(:merchant)
+    merchant1 = create(:merchant)
     item_params = {
       name: 'Test Item Name',
       description: 'Test Description',
       unit_price: 14.99,
-      merchant_id: merchant_1.id
+      merchant_id: merchant1.id
     }
     headers = { 'CONTENT_TYPE' => 'application/json' }
 
@@ -70,7 +70,7 @@ describe 'Items API' do
   end
 
   it 'can update an existing item' do
-    merchant_1 = create(:merchant, id: 4)
+    merchant1 = create(:merchant, id: 4)
     id = create(:item).id
     previous_name = Item.last.name
     previous_description = Item.last.description
@@ -80,7 +80,7 @@ describe 'Items API' do
       name: 'Updated Item Name',
       description: 'Updated Item Description',
       unit_price: 23.45,
-      merchant_id: merchant_1.id
+      merchant_id: merchant1.id
     }
     headers = { 'CONTENT_TYPE' => 'application/json' }
 
@@ -95,7 +95,7 @@ describe 'Items API' do
     expect(item.unit_price).to_not eq(previous_unit_price)
     expect(item.unit_price).to eq(23.45)
     expect(item.merchant_id).to_not eq(previous_merchant_id)
-    expect(item.merchant_id).to eq(merchant_1.id)
+    expect(item.merchant_id).to eq(merchant1.id)
   end
 
   it 'can destroy an item' do
