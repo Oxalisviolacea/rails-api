@@ -8,20 +8,15 @@ describe 'Merchants API' do
 
     expect(response).to be_successful
 
-    merchants = JSON.parse(response.body, symbolize_names: true)
+    json = JSON.parse(response.body, symbolize_names: true)
 
+    merchants = json[:data]
     merchants.each do |merchant|
       expect(merchant).to have_key(:id)
-      expect(merchant[:id]).to be_an(Integer)
+      expect(merchant[:id]).to be_an(String)
 
-      expect(merchant).to have_key(:name)
-      expect(merchant[:name]).to be_a(String)
-
-      expect(merchant).to have_key(:created_at)
-      expect(merchant[:created_at]).to be_a(String)
-
-      expect(merchant).to have_key(:updated_at)
-      expect(merchant[:updated_at]).to be_a(String)
+      expect(merchant[:attributes]).to have_key(:name)
+      expect(merchant[:attributes][:name]).to be_a(String)
     end
   end
 
@@ -30,21 +25,17 @@ describe 'Merchants API' do
 
     get "/api/v1/merchants/#{id}"
 
-    merchant = JSON.parse(response.body, symbolize_names: true)
+    json = JSON.parse(response.body, symbolize_names: true)
 
     expect(response).to be_successful
 
+    merchant = json[:data]
+
     expect(merchant).to have_key(:id)
-    expect(merchant[:id]).to be_an(Integer)
+    expect(merchant[:id]).to be_an(String)
 
-    expect(merchant).to have_key(:name)
-    expect(merchant[:name]).to be_a(String)
-
-    expect(merchant).to have_key(:created_at)
-    expect(merchant[:created_at]).to be_a(String)
-
-    expect(merchant).to have_key(:updated_at)
-    expect(merchant[:updated_at]).to be_a(String)
+    expect(merchant[:attributes]).to have_key(:name)
+    expect(merchant[:attributes][:name]).to be_a(String)
   end
 
   it 'can create a new merchant' do
@@ -58,8 +49,8 @@ describe 'Merchants API' do
 
     expect(response).to be_successful
     expect(created_merchant.name).to eq(merchant_params[:name])
-    expect(created_merchant.created_at).not_to be_empty
-    expect(created_merchant.updated_at).not_to be_empty
+    expect(created_merchant.created_at.to_s).not_to be_empty
+    expect(created_merchant.updated_at.to_s).not_to be_empty
   end
 
   it 'can update an existing merchant' do
