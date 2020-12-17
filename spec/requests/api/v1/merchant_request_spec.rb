@@ -83,13 +83,13 @@ describe 'Merchants API' do
 
   describe 'items endpoint' do
     it 'can return all of the items associated with a merchant' do
-      merchant_1 = create(:merchant)
-      item_1 = create(:item, merchant_id: merchant_1.id)
-      item_2 = create(:item, merchant_id: merchant_1.id)
-      merchant_2 = create(:merchant)
-      item_3 = create(:item, merchant_id: merchant_2.id)
+      merchant1 = create(:merchant)
+      item1 = create(:item, merchant_id: merchant1.id)
+      create(:item, merchant_id: merchant1.id)
+      merchant2 = create(:merchant)
+      item3 = create(:item, merchant_id: merchant2.id)
 
-      get "/api/v1/merchants/#{merchant_1.id}/items"
+      get "/api/v1/merchants/#{merchant1.id}/items"
       expect(response).to be_successful
 
       items_response = JSON.parse(response.body, symbolize_names: true)
@@ -98,21 +98,21 @@ describe 'Merchants API' do
       expect(items_response[:data]).to be_an(Array)
       expect(items_response[:data].count).to eq(2)
 
-      expect(items_response[:data][0][:id]).to eq(item_1.id.to_s)
+      expect(items_response[:data][0][:id]).to eq(item1.id.to_s)
       item_attributes = items_response[:data][0][:attributes]
-      expect(item_attributes[:name]).to eq(item_1.name)
-      expect(item_attributes[:description]).to eq(item_1.description)
-      expect(item_attributes[:unit_price]).to eq(item_1.unit_price)
-      expect(item_attributes[:merchant_id]).to eq(merchant_1.id)
+      expect(item_attributes[:name]).to eq(item1.name)
+      expect(item_attributes[:description]).to eq(item1.description)
+      expect(item_attributes[:unit_price]).to eq(item1.unit_price)
+      expect(item_attributes[:merchant_id]).to eq(merchant1.id)
 
       items_response[:data].each do |item_data|
         expect(item_data).to have_key(:id)
         expect(item_data[:id]).to be_a(String)
-        expect(item_data[:id]).to_not eq(item_1.id)
+        expect(item_data[:id]).to_not eq(item1.id)
 
         expect(item_data[:attributes]).to have_key(:name)
         expect(item_data[:attributes][:name]).to be_a(String)
-        expect(item_data[:attributes][:name]).to_not eq(item_3.name)
+        expect(item_data[:attributes][:name]).to_not eq(item3.name)
       end
     end
   end
