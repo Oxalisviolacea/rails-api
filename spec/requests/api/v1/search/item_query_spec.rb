@@ -329,7 +329,7 @@ describe 'Items API' do
       expect(response.status).to eq(204)
     end
 
-    it 'can find all items matching a created_at date search' do
+    it 'can find one item matching a created_at date search' do
       create(:item, created_at: Date.today)
       create(:item, created_at: Date.today)
       item3 = create(:item, created_at: 10.days.ago)
@@ -369,7 +369,7 @@ describe 'Items API' do
       expect(response.status).to eq(204)
     end
 
-    it 'can find all items matching a updated_at date search' do
+    it 'can find one item matching a updated_at date search' do
       create(:item, updated_at: Date.today)
       create(:item, updated_at: Date.today)
       item3 = create(:item, updated_at: 10.days.ago)
