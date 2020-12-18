@@ -121,9 +121,9 @@ describe 'Items API' do
       expect(response).to be_successful
 
       merchant_response = JSON.parse(response.body, symbolize_names: true)
-
+      # require 'pry'; binding.pry
       expect(merchant_response).to have_key(:data)
-      expect(merchant_response[:data]).to be_an(Array)
+      expect(merchant_response[:data]).to be_a(Hash)
 
       merchant_response[:data].each do |merchant_data|
         expect(merchant_data).to have_key(:id)
