@@ -22,4 +22,21 @@ class Merchant < ApplicationRecord
     .order("num_sold DESC")
     .limit(limit)
   end
+
+  def self.total_revenue_between_(params)
+    Merchant.select("sum(invoice_items.unit_price * invoice_items.quantity) as revenue")
+    .joins(invoices: [:invoice_items, :transactions])
+    .where("invoices.status='shipped' 
+      AND transactions.result='success' 
+
+      AND DATE#{params[:start].beginning_of_day} <= transactions.created_at 
+      AND DATE#{params[:start].end_of_day} <= transactions.created_at")
+  end
+
+  def self.revenue_by_merchant_(id)
+    Merchant
+    .select("sum(invoice_items.unit_price * invoice_items.quantity) as revenue")
+    .joins(invoices: [:invoice_items, :transactions])
+    .where("invoices.status='shipped' AND transactions.result='success' AND merchants.id=#{id}")
+  end
 end
