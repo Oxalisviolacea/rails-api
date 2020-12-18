@@ -5,6 +5,7 @@ Rails.application.routes.draw do
         collection do
           get '/find', to: 'merchants/search#show'
           get '/find_all', to: 'merchants/search#index'
+          get '/most_revenue', to: 'merchants#merchant_with_most_revenue'
         end
         get '/items', to: 'merchants/items#index'
       end
