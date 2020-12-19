@@ -105,8 +105,8 @@ describe 'Merchants API' do
       expect(response).to be_successful
 
       json = JSON.parse(response.body, symbolize_names: true)
+
       expect(json[0][:revenue]).to eq('45')
-      expect(json[:data][:attributes][:revenue]).to eq('45')
     end
   end
 end
